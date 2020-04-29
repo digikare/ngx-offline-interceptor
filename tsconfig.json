@@ -17,7 +17,15 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ngx-offline-interceptor": [
+        "dist/ngx-offline-interceptor"
+      ],
+      "ngx-offline-interceptor/*": [
+        "dist/ngx-offline-interceptor/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
