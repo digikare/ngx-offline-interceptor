@@ -1,24 +1,106 @@
-# NgxOfflineInterceptor
+# @digikare/ngx-offline-interceptor
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.14.
+> Block your http request when you are offline to avoid error and display toast message when offline/online event is throw.
 
-## Code scaffolding
+![Demo](docs/img/demo.gif)
 
-Run `ng generate component component-name --project ngx-offline-interceptor` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-offline-interceptor`.
-> Note: Don't forget to add `--project ngx-offline-interceptor` or else it will be added to the default project in your `angular.json` file. 
 
-## Build
+# 
+- [Installation](#Installation)
+- [Usage](#Usage)
+    - [Custom Config](#Custom-Config)
+   - [Using with translate module](#Using-with-translate-module)
 
-Run `ng build ngx-offline-interceptor` to build the project. The build artifacts will be stored in the `dist/` directory.
+#
 
-## Publishing
+## Installation
 
-After building your library with `ng build ngx-offline-interceptor`, go to the dist folder `cd dist/ngx-offline-interceptor` and run `npm publish`.
 
-## Running unit tests
+```
+$ npm i --save @digikare/ngx-offline-interceptor
+````
 
-Run `ng test ngx-offline-interceptor` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Usage 
+```typescript
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    ...
+    NgxOfflineInterceptorModule.forRoot(),
+    ...
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
 
-## Further help
+## Custom Config
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+```typescript
+{
+  loader?: Provider;
+  displayToast?: boolean; // true
+  contentOffline?: string; // You are offline
+  contentBackOnline?: string; // You are now online
+  toastDuration?: number; // 2000ms
+}
+```
+```typescript
+...
+NgxOfflineInterceptorModule.forRoot({
+    contentOffline : "❌ Offline ❌",
+    contentBackOnline : "✅ back online",
+}),
+
+```
+
+## Using with translate module
+
+> Example with ngx-translate
+```typescript
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    ...
+    NgxOfflineInterceptorModule.forRoot(),
+    ...
+  ],
+  providers: [
+      {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializerFn,
+      multi: true,
+      deps: [
+        TranslateService,
+        NgxOfflineInterceptorService
+      ],
+    },
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+const appInitializerFn = (
+  translateService: TranslateService,
+  offlineService: NgxOfflineInterceptorService,
+) => {
+  return () => {
+      translateService.get([
+          'OFFLINE.BACK_TO_ONLINE', //<YOUR_KEY_OFFLINE>
+          'OFFLINE.OFFLINE'  //<YOUR_KEY_ONLINE>
+        ]).subscribe((res) => {
+          offlineService.setConfig({
+            contentBackOnline: res['OFFLINE.BACK_TO_ONLINE'],
+            contentOffline: res['OFFLINE.OFFLINE']
+          });
+        });
+  }
+};
+
+```

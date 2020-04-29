@@ -1,6 +1,6 @@
 {
   "name": "@digikare/ngx-offline-interceptor",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "peerDependencies": {
     "@angular/common": "^8.2.14",
     "@angular/core": "^8.2.14",
@@ -9,5 +9,25 @@
     "@angular/material": "^8.2.3",
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14"
-  }
+  },
+  "main": "''",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digikare/ngx-offline-interceptor.git"
+  },
+  "author": "Johan Pujol <jpujol@digikare.com>",
+  "description": "Block angular http request when you are offline",
+  "license": "MIT",
+  "keywords": [
+    "angular",
+    "interceptor",
+    "offline"
+  ],  
+  "bugs": {
+    "url": "https://github.com/digikare/ngx-offline-interceptor/issues"
+  },
+  "homepage": "https://github.com/digikare/ngx-offline-interceptor#readme"
 }
