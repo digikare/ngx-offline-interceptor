@@ -1,27 +1,106 @@
-# NgOfflineInterceptor
+# @digikare/ngx-offline-interceptor
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.26.
+> Block your http request when you are offline to avoid error and display toast message when offline/online event is throw.
 
-## Development server
+![Demo](docs/img/demo.gif)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+# 
+- [Installation](#Installation)
+- [Usage](#Usage)
+    - [Custom Config](#Custom-Config)
+   - [Using with translate module](#Using-with-translate-module)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+#
 
-## Build
+## Installation
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-## Running unit tests
+```
+$ npm i --save @digikare/ngx-offline-interceptor
+````
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Usage 
+```typescript
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    ...
+    NgxOfflineInterceptorModule.forRoot(),
+    ...
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
 
-## Running end-to-end tests
+## Custom Config
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+```typescript
+{
+  loader?: Provider;
+  displayToast?: boolean; // true
+  contentOffline?: string; // You are offline
+  contentBackOnline?: string; // You are now online
+  toastDuration?: number; // 2000ms
+}
+```
+```typescript
+...
+NgxOfflineInterceptorModule.forRoot({
+    contentOffline : "❌ Offline ❌",
+    contentBackOnline : "✅ back online",
+}),
 
-## Further help
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## Using with translate module
+
+> Example with ngx-translate
+```typescript
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    ...
+    NgxOfflineInterceptorModule.forRoot(),
+    ...
+  ],
+  providers: [
+      {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializerFn,
+      multi: true,
+      deps: [
+        TranslateService,
+        NgxOfflineInterceptorService
+      ],
+    },
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+const appInitializerFn = (
+  translateService: TranslateService,
+  offlineService: NgxOfflineInterceptorService,
+) => {
+  return () => {
+      translateService.get([
+          'OFFLINE.BACK_TO_ONLINE', //<YOUR_KEY_OFFLINE>
+          'OFFLINE.OFFLINE'  //<YOUR_KEY_ONLINE>
+        ]).subscribe((res) => {
+          offlineService.setConfig({
+            contentBackOnline: res['OFFLINE.BACK_TO_ONLINE'],
+            contentOffline: res['OFFLINE.OFFLINE']
+          });
+        });
+  }
+};
+
+```
