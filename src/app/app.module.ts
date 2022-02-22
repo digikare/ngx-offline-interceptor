@@ -3,22 +3,20 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgxOfflineInterceptorModule } from '@digikare/ngx-offline-interceptor';
+import { NgxOfflineInterceptorModule } from 'ngx-offline-interceptor';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
     NgxOfflineInterceptorModule.forRoot({
-      contentBackOnline: 'You are back online , click on refresh to reload !'
+      contentBackOnline: 'You are back online , click on refresh to reload !',
     }),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
