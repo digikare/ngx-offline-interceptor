@@ -121,6 +121,11 @@
           "options": {
             "tsConfig": "projects/ngx-offline-interceptor/tsconfig.lib.json",
             "project": "projects/ngx-offline-interceptor/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-offline-interceptor/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
